@@ -8,6 +8,7 @@ import (
 
 func TestMain(m *testing.M) {
 	prefix = "./"
+	Setup(false)
 	m.Run()
 }
 

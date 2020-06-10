@@ -6,11 +6,7 @@ import (
 )
 
 func downloadFile(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		return
-	}
-	path := r.Form.Get("path")
+	path := r.URL.Path[len(downloadApi):]
 	if len(path) <= 0 {
 		w.WriteHeader(400)
 		return

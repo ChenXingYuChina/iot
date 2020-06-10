@@ -3,6 +3,7 @@ package server
 import (
 	"encoding/json"
 	"iot/s3fs"
+	"log"
 	"net/http"
 	"net/url"
 )
@@ -13,7 +14,7 @@ func listFiles(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(400)
 		return
 	}
-	prefix := r.URL.Path
+	prefix := r.URL.Path[len(lsApi):]
 	sa := r.Form.Get("start_after")
 	if sa != "" {
 		sa, err = url.QueryUnescape(sa)
@@ -25,6 +26,7 @@ func listFiles(w http.ResponseWriter, r *http.Request) {
 	var fs *s3fs.FileList
 	fs, err = ls(prefix, sa, 20)
 	if err != nil {
+		log.Println(err)
 		w.WriteHeader(500)
 		return
 	}

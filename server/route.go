@@ -11,6 +11,15 @@ var dlFile func(filename string) (io.ReadCloser, error)
 var pFile func(f s3fs.Object, filename string) error
 var ls func(prefix string, startAfter string, keyNumber int64) (*s3fs.FileList, error)
 
+const (
+	deleteApi = "/api/delete/"
+	deleteMultiApi = "/api/deleteMulti"
+	uploadApi = "/api/upload/"
+	downloadApi = "/api/download/"
+	lsApi = "/api/ls/"
+)
+
+
 func Setup(useS3 bool) {
 	if useS3 {
 		delFile = s3fs.DeleteFile
@@ -24,9 +33,13 @@ func Setup(useS3 bool) {
 		ls = listFileLocal
 	}
 
-	http.HandleFunc("/api/delete/*", deleteFile)
-	http.HandleFunc("/api/ls/*", listFiles)
-	http.HandleFunc("/api/upload/*", putFile)
-	http.HandleFunc("/api/download/*", downloadFile)
-	http.HandleFunc("/api/deleteMulti/*", deleteMulti)
+	http.HandleFunc(deleteApi, deleteFile)
+	http.HandleFunc(lsApi, listFiles)
+	http.HandleFunc(uploadApi, putFile)
+	http.HandleFunc(downloadApi, downloadFile)
+	http.HandleFunc(deleteMultiApi, deleteMulti)
+}
+
+func Start() error {
+	return http.ListenAndServe("0.0.0.0:80", nil)
 }

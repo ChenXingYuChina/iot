@@ -7,15 +7,14 @@ import (
 )
 
 func deleteFile(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
+	path := r.URL.Path[len(deleteApi):]
+	if len(path) <= 0 {
 		w.WriteHeader(400)
 		return
 	}
-	err = delFile(r.Form["path"][0])
+	err := delFile(path)
 	if err != nil {
 		w.WriteHeader(500)
-		w.Write([]byte(err.Error()))
 		return
 	}
 	w.WriteHeader(200)
@@ -36,9 +35,9 @@ func deleteMulti(w http.ResponseWriter, r *http.Request) {
 		err = delFile(v)
 		if err != nil {
 			log.Println(err)
+			w.WriteHeader(500)
 			continue
 		}
-		w.WriteHeader(500)
 	}
 	w.WriteHeader(200)
 }
