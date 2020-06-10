@@ -26,6 +26,7 @@ func Setup(useS3 bool) {
 		dlFile = s3fs.DownloadFile
 		pFile = s3fs.PutFile
 		ls = s3fs.ListFiles
+		s3fs.Start()
 	} else {
 		delFile = deleteFileLocal
 		dlFile = downloadFileLocal
@@ -38,6 +39,7 @@ func Setup(useS3 bool) {
 	http.HandleFunc(uploadApi, putFile)
 	http.HandleFunc(downloadApi, downloadFile)
 	http.HandleFunc(deleteMultiApi, deleteMulti)
+	http.Handle("/", http.FileServer(http.Dir("./html")))
 }
 
 func Start() error {
