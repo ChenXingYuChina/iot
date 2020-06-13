@@ -7,7 +7,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	prefix = "./"
+	Prefix = "./"
 	Setup(false)
 	m.Run()
 }

@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	server.Prefix = "./"
 	server.Setup(parseCredentials())
 	server.Start()
 }

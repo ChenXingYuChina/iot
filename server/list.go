@@ -15,6 +15,7 @@ func listFiles(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	prefix := r.URL.Path[len(lsApi):]
+	log.Println("call ls" + prefix)
 	sa := r.Form.Get("start_after")
 	if sa != "" {
 		sa, err = url.QueryUnescape(sa)

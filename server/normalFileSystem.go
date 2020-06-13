@@ -9,21 +9,21 @@ import (
 	"strings"
 )
 
-var prefix string
+var Prefix string
 
 func deleteFileLocal(filename string) error {
-	return os.Remove(prefix + filename)
+	return os.Remove(Prefix + filename)
 }
 
 func downloadFileLocal(filename string) (io.ReadCloser, error) {
-	return os.Open(prefix + filename)
+	return os.Open(Prefix + filename)
 }
 
 func putFileLocal(f s3fs.Object, filename string) error {
-	filename = prefix + filename
+	filename = Prefix + filename
 	i := strings.LastIndex(filename, "/")
 	_ = os.MkdirAll(filename[i:], os.ModePerm)
-	file, err := os.Create(prefix + filename)
+	file, err := os.Create(Prefix + filename)
 	if err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func listFileLocal(folder string, startAfter string, keyNumber int64) (*s3fs.Fil
 	}
 	baseName := startAfter[len(folder):]
 	visualFolder := folder
-	folder = prefix + folder
+	folder = Prefix + folder
 	dir, err := ioutil.ReadDir(folder[:len(folder)-1])
 	if err != nil {
 		return nil, err
