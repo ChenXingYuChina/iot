@@ -138,7 +138,9 @@
 
     function showList(url, newList) {
         prefix = url.substring(8);
-        prefix = prefix.substring(0, prefix.lastIndexOf("?"));
+        if (prefix.includes("?")) {
+            prefix = prefix.substring(0, prefix.lastIndexOf("?"));
+        }
         p.text("/"+prefix);
         folderField.val("/" +prefix);
         console.log(folderField.val());
